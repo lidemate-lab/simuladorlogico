@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador de Compuertas Lógicas</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f4f6f9; padding: 20px; }
+        .card { background: white; max-width: 450px; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .switch-box { margin: 15px 0; font-size: 1.2em; }
+        button { padding: 10px 20px; font-size: 1em; cursor: pointer; border: none; border-radius: 5px; background: #007bff; color: white; margin: 5px; }
+        button:hover { background: #0056b3; }
+        .lamp { width: 80px; height: 80px; border-radius: 50%; margin: 20px auto; background: #ddd; border: 3px solid #999; transition: 0.3s; }
+        .lamp.on { background: #ffeb3b; box-shadow: 0 0 20px #ffeb3b; border-color: #fbc02d; }
+        .gate-select { margin: 15px 0; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Laboratorio Digital: Compuertas</h2>
+    
+    <div class="gate-select">
+        <label><b>Compuerta:</b></label>
+        <select id="gateType" onchange="actualizarSimulador()" style="padding: 5px; font-size: 1em;">
+            <option value="AND">AND (Todas deben estar en 1)</option>
+            <option value="OR">OR (Al menos una en 1)</option>
+        </select>
+    </div>
+
+    <div class="switch-box">
+        <p>Interruptor A: <span id="labelA">0</span></p>
+        <button onclick="toggleA()">Cambiar A</button>
+    </div>
+
+    <div class="switch-box">
+        <p>Interruptor B: <span id="labelB">0</span></p>
+        <button onclick="toggleB()">Cambiar B</button>
+    </div>
+
+    <h3>Salida (Bombilla):</h3>
+    <div id="lamp" class="lamp"></div>
+    <p id="statusText">Apagada (0)</p>
+</div>
+
+<script>
+    let valA = 0;
+    let valB = 0;
+
+    function toggleA() {
+        valA = valA === 0 ? 1 : 0;
+        document.getElementById('labelA').innerText = valA;
+        actualizarSimulador();
+    }
+
+    function toggleB() {
+        valB = valB === 0 ? 1 : 0;
+        document.getElementById('labelB').innerText = valB;
+        actualizarSimulador();
+    }
+
+    function actualizarSimulador() {
+        let gate = document.getElementById('gateType').value;
+        let resultado = 0;
+
+        if (gate === 'AND') {
+            resultado = (valA === 1 && valB === 1) ? 1 : 0;
+        } else if (gate === 'OR') {
+            resultado = (valA === 1 || valB === 1) ? 1 : 0;
+        }
+
+        let lamp = document.getElementById('lamp');
+        let statusText = document.getElementById('statusText');
+
+        if (resultado === 1) {
+            lamp.classList.add('on');
+            statusText.innerText = "Encendida (1)";
+        } else {
+            lamp.classList.remove('on');
+            statusText.innerText = "Apagada (0)";
+        }
+    }
+</script>
+
+</body>
+</html>
